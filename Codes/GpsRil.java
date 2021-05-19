@@ -92,13 +92,26 @@ public class GpsRil {
     }
 
     public double distanza(GpsRil a) {
-        double lat1 = Math.toRadians(this.getLat());
-        double lon1 = Math.toRadians(this.getLongi());
-        double lat2 = Math.toRadians(a.getLat());
-        double lon2 = Math.toRadians(a.getLongi());
+        double lat_1 = a.getLat() * (Math.PI / 180);
+        double lon_1 = a.getLongi() *(Math.PI/180);
+        double alt_1 = a.getAlt();
 
-        double earthRadius = 6371.01; //Kilometers
-        return earthRadius * Math.acos(Math.sin(lat1)*Math.sin(lat2) + Math.cos(lat1)*Math.cos(lat2)*Math.cos(lon1 - lon2));
+        double lat_2 = this.getLat() * (Math.PI / 180);
+        double lon_2 = this.getLongi() * (Math.PI / 180);
+        double alt_2 = this.getAlt();
+
+        double r = 6376.5 ;
+
+        double x_1 = r * Math.sin(lon_1) * Math.cos(lat_1);
+        double y_1 = r * Math.sin(lon_1) * Math.sin(lat_1);
+        double z_1 = r * Math.cos(lon_1);
+
+        double x_2 = r * Math.sin(lon_2) * Math.cos(lat_2);
+        double y_2 = r * Math.sin(lon_2) * Math.sin(lat_2);
+        double z_2 = r * Math.cos(lon_2);
+
+        double dist = Math.sqrt((x_2 - x_1) * (x_2 - x_1) + (y_2 - y_1) *(y_2 - y_1) + (z_2 - z_1) * (z_2 - z_1));
+        return dist;
     }
 
 
