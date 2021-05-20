@@ -1,4 +1,4 @@
-package gpsril;
+package percorso;
 
 public class GpsRil {
 
