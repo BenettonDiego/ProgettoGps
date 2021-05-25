@@ -10,10 +10,11 @@ import java.math.RoundingMode;
 
 public class Percorso {
 
-    private ArrayList<GpsRil> lista = new ArrayList<>();
+    private ArrayList<GpsRil> lista;
 
    //da sistemare
     public Percorso(String file) {
+        lista = new ArrayList<>();
         readFile(file);
     }
 
