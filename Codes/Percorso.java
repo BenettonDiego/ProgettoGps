@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Percorso {
 
-    private ArrayList<GpsRil> lista;
+    private ArrayList<GpsRil> lista =new ArrayList<>();
 
    //da sistemare
     public Percorso(String file) {
@@ -32,12 +32,12 @@ public class Percorso {
             linea = riga.readLine();
             while ((linea = riga.readLine()) != null) {
                 linea=linea.replace(",",".");
-                System.out.println(linea);
+                //System.out.println(linea);
                 String dati[] = linea.split(";");
                 //Print dei dati
-                for (int i=0;i<6;i++){
-                    System.out.println(dati[i]);
-                }
+                //for (int i=0;i<6;i++){
+                //    System.out.println(dati[i]);
+                //}
                 //long unixTime, String time, double lat, double longi, double alt, double dist
 
                 GpsRil a = new GpsRil ( Long.parseLong(dati[0]), 
@@ -54,7 +54,7 @@ public class Percorso {
         }
 }
 
-    public long DurataPercorso() {
+    public long DurataPercorso(){ //Secondi
         long durata = 0;
         if (1 < lista.size()) {
             durata = lista.get(lista.size() - 1).getUnixTime() - lista.get(0).getUnixTime();
@@ -62,7 +62,7 @@ public class Percorso {
         return (durata);
     }
 
-    public double DistanzaPercorso() {
+    public double DistanzaPercorso() { //Distanza totale percorsa (KM)
         double distanza = 0;
         if (1 < lista.size()) {
             for (int i = 0; i < (lista.size() - 1); i++) {
@@ -73,7 +73,7 @@ public class Percorso {
     }
 
     public double VelocitaMedia() {    //KM / h
-        return (this.DistanzaPercorso() / (this.DurataPercorso()) / 3600);
+        return (this.DistanzaPercorso() / (this.DurataPercorso() / (double)3600));
     }
 
     public double VelocitaMassima() {  //KM / h
@@ -99,11 +99,16 @@ public class Percorso {
     }
 
     public String DataInizioPercorso() {
-        return (lista.get(0).getTime());
+        String giorno=(lista.get(0).getTime()).split("T")[0];
+        return (giorno);
     }
 
     public String DataFinePercorso() {
-        return (lista.get(lista.size() - 1).getTime());
+        String giorno="";
+        if (lista.size()!=0){
+        giorno=(lista.get(lista.size()-1).getTime()).split("T")[0];
+        }
+        return (giorno);
     }
 
     public double DislivelloTotale() {
@@ -138,6 +143,13 @@ public class Percorso {
         //da sistemare
         String nomeFile = "file_percorso.csv";
         Percorso p1 = new Percorso(nomeFile);
-        System.out.println(p1.DislivelloTotale());
+        System.out.println("Il percorso e' durato " + p1.DurataPercorso() + " secondi");
+        System.out.println("Sono stati percorsi " + p1.DistanzaPercorso() + " KM");
+        System.out.println("La velocita' media e' stata di " + p1.VelocitaMedia() + " KM/h");
+        System.out.println("La velocita' massima e' stata di " + p1.VelocitaMassima() + " KM/h");
+        System.out.println("Le rilevazioni totali sono state " + p1.NumeroRilevazioni());
+        System.out.println("Il percorso e' iniziato il " + p1.DataInizioPercorso() + " ed e' finito il giorno " + p1.DataFinePercorso());
+        System.out.println("Il dislivello totale del percorso è stato di " + p1.DislivelloTotale() + " gradi dell'altitudine con un altezza minima di " 
+                            + p1.AltezzaMinima()+ " e un altezza massima di " + p1.AltezzaMassima());
     }
 }
