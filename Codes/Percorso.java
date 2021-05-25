@@ -1,7 +1,9 @@
 package percorso;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Percorso {
@@ -22,26 +24,35 @@ public class Percorso {
     }
 
     public void readFile(String pp) {
-        GpsRil a = new GpsRil();
+        
         BufferedReader riga;
         try {
             riga = new BufferedReader(new FileReader(pp));
-            String linea = riga.readLine();
+            String linea;
+            linea = riga.readLine();
             while ((linea = riga.readLine()) != null) {
+                linea=linea.replace(",",".");
+                System.out.println(linea);
                 String dati[] = linea.split(";");
-                a.setUnixTime((long) Integer.parseInt(dati[0]));
-                a.setTime(dati[1]);
-                a.setLat((double) Integer.parseInt(dati[2]));
-                a.setLongi((double) Integer.parseInt(dati[3]));
-                a.setAlt((double) Integer.parseInt(dati[4]));
-                a.setDist((double) Integer.parseInt(dati[5]));
+                //Print dei dati
+                for (int i=0;i<6;i++){
+                    System.out.println(dati[i]);
+                }
+                //long unixTime, String time, double lat, double longi, double alt, double dist
+
+                GpsRil a = new GpsRil ( Long.parseLong(dati[0]), 
+                                        dati[1], 
+                                        Double.parseDouble(dati[2]), 
+                                        Double.parseDouble(dati[3]), 
+                                        Double.parseDouble(dati[4]), 
+                                        Double.parseDouble(dati[5]) );
                 lista.add(a);
             }
             riga.close();
-        } catch (Exception b) {
-            System.out.println("file non trovato");
+        } catch (FileNotFoundException ex) {
+        } catch (IOException ex) {
         }
-    }
+}
 
     public long DurataPercorso() {
         long durata = 0;
